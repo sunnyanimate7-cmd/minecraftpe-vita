@@ -27,6 +27,7 @@
 #define _drveglplatform_h_
 
 #include "KHR/khrplatform.h"
+#include <psp2/types.h>
 
 #if !defined(IMG_EXPORT)
 #define	IMG_EXPORT
