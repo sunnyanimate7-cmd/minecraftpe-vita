@@ -723,22 +723,32 @@ void Minecraft::tickInput() {
 			// make controls nicer - Li
 
 			#if defined(__VITA__) || defined(_WIN32)
-			if (key == Keyboard::KEY_E) {
-				// open inventory
-				screenChooser.setScreen(SCREEN_BLOCKSELECTION);
-			}
-			if (key == Keyboard::KEY_ESCAPE) {
-				// pause the game
-				pauseGame(false);
-			}
-			if(key == Keyboard::KEY_K) {
-				// drop currently selected inventory slot.
-
-				if (player->inventory->getItem(player->inventory->selected)) {
-					player->inventory->dropSlot(player->inventory->selected, false);
+				if (key == Keyboard::KEY_E) {
+					// open inventory
+					screenChooser.setScreen(SCREEN_BLOCKSELECTION);
+				}
+				if (key == Keyboard::KEY_ESCAPE) {
+					// pause the game
+					pauseGame(false);
+				}
+				if(key == Keyboard::KEY_Q) {
+					// drop currently selected inventory slot.
+					if (player->inventory->getItem(player->inventory->selected)) {
+						player->inventory->dropSlot(player->inventory->selected, false);
+					}
 				}
 
-			}
+				if(key == Keyboard::KEY_RIGHT) {
+					player->inventory->selectSlot((player->inventory->selected + 1) % Inventory::MAX_SELECTION_SIZE);
+				}
+				if(key == Keyboard::KEY_LEFT) {
+					player->inventory->selectSlot((player->inventory->selected - 1) % Inventory::MAX_SELECTION_SIZE);
+				}
+
+				if (key == Keyboard::KEY_F5) {
+					options.thirdPersonView = !options.thirdPersonView;
+				}
+
 			#endif
 
 			#if defined(RPI)

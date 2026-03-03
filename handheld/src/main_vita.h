@@ -329,18 +329,18 @@ void handleController() {
 	if(changedButtons) {
 		//sceClibPrintf("changedButtons = %08x\n", changedButtons);
 	}
-	// dpad movement .. (maybe controls should be simular to LCE (?))
+
+	// f5
 	if(changedButtons & SCE_CTRL_UP) {
-		Keyboard::feed(Keyboard::KEY_W, BTN_STATE(ctrl.buttons, SCE_CTRL_UP));
+		Keyboard::feed(Keyboard::KEY_F5, BTN_STATE(ctrl.buttons, SCE_CTRL_UP));
 	}
-//	if(changedButtons & SCE_CTRL_DOWN) {
-//		Keyboard::feed(Keyboard::KEY_S, BTN_STATE(ctrl.buttons, SCE_CTRL_DOWN));
-//	}
-	if(changedButtons & SCE_CTRL_LEFT) {
-		Keyboard::feed(Keyboard::KEY_A, BTN_STATE(ctrl.buttons, SCE_CTRL_LEFT));
-	}
+
+	// change selected slot
 	if(changedButtons & SCE_CTRL_RIGHT) {
-		Keyboard::feed(Keyboard::KEY_D, BTN_STATE(ctrl.buttons, SCE_CTRL_RIGHT));
+		Keyboard::feed(Keyboard::KEY_RIGHT, BTN_STATE(ctrl.buttons, SCE_CTRL_RIGHT));
+	}
+	if(changedButtons & SCE_CTRL_LEFT) {
+		Keyboard::feed(Keyboard::KEY_LEFT, BTN_STATE(ctrl.buttons, SCE_CTRL_LEFT));
 	}
 
 	// sneak
@@ -355,15 +355,15 @@ void handleController() {
 
 	// crafting menu
 	if(changedButtons & SCE_CTRL_TRIANGLE) {
-		Keyboard::feed(Keyboard::KEY_Q, BTN_STATE(ctrl.buttons, SCE_CTRL_SQUARE));
+		Keyboard::feed(Keyboard::KEY_C, BTN_STATE(ctrl.buttons, SCE_CTRL_TRIANGLE));
 	}
 	// drop item
 	if(changedButtons & SCE_CTRL_CIRCLE) {
-		Keyboard::feed(Keyboard::KEY_K, BTN_STATE(ctrl.buttons, SCE_CTRL_CIRCLE));
+		Keyboard::feed(Keyboard::KEY_Q, BTN_STATE(ctrl.buttons, SCE_CTRL_CIRCLE));
 	}
 	// inventory
 	if(changedButtons & SCE_CTRL_SQUARE) {
-		Keyboard::feed(Keyboard::KEY_E, BTN_STATE(ctrl.buttons, SCE_CTRL_TRIANGLE));
+		Keyboard::feed(Keyboard::KEY_E, BTN_STATE(ctrl.buttons, SCE_CTRL_SQUARE));
 	}
 	// pause
 	if(changedButtons & SCE_CTRL_START) {

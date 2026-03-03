@@ -55,6 +55,14 @@ public:
 	static const int KEY_Y = 89;
 	static const int KEY_Z = 90;
 
+
+	// patch: insert directional buttons
+	static const int KEY_UP = 38;
+	static const int KEY_DOWN = 40;
+	static const int KEY_RIGHT = 39;
+	static const int KEY_LEFT = 37;
+
+
 	static const int KEY_BACKSPACE = 8;
 	static const int KEY_RETURN = 13;
 
