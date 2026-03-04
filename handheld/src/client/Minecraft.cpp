@@ -723,8 +723,7 @@ void Minecraft::tickInput() {
 			// make controls nicer - Li
 
 			#if defined(__VITA__) || defined(_WIN32)
-				// check if we're in game
-				if(player != nullptr && level != nullptr) {
+				if(player != nullptr && level != nullptr) { // check if we're in game
 					if (key == Keyboard::KEY_E) {
 						// open inventory
 						screenChooser.setScreen(SCREEN_BLOCKSELECTION);
@@ -912,8 +911,7 @@ void Minecraft::tickInput() {
 				BuildActionIntention bai(BuildActionIntention::BAI_REMOVE | BuildActionIntention::BAI_ATTACK);
 				handleBuildAction(&bai);
 			}
-			else // Build and use/interact is on same button
-			if (key == options.keyUse.key && isPressed) {
+			else if (key == options.keyUse.key && isPressed) { // Build and use/interact is on same button
 				BuildActionIntention bai(BuildActionIntention::BAI_BUILD | BuildActionIntention::BAI_INTERACT);
 				handleBuildAction(&bai);
 			}
