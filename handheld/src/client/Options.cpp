@@ -55,13 +55,19 @@ void Options::initDefaultValues() {
 	keyBuild = KeyMapping("key.inventory", Keyboard::KEY_E);
 	keySneak = KeyMapping("key.sneak", Keyboard::KEY_LSHIFT);
 #ifndef RPI
-	//keyCraft = KeyMapping("key.crafting", Keyboard::KEY_Q);
-	keyCraft = KeyMapping("key.crafting", Keyboard::KEY_C);
+	keyCraft = KeyMapping("key.crafting", Keyboard::KEY_Q);
 	keyDrop  = KeyMapping("key.drop", Keyboard::KEY_Q);
 	keyChat  = KeyMapping("key.chat", Keyboard::KEY_T);
 	keyFog   = KeyMapping("key.fog", Keyboard::KEY_F);
-	keyDestroy=KeyMapping("key.destroy", 88); // @todo @fix
+	keyDestroy=KeyMapping("key.destroy", Keyboard::KEY_X); // @todo @fix
 	keyUse   = KeyMapping("key.use", Keyboard::KEY_U);
+#endif
+
+#ifdef __VITA__
+	username   = "Vita";
+	keyCraft   = KeyMapping("key.crafting", Keyboard::KEY_C);
+	keyUse     = KeyMapping("key.use", Keyboard::KEY_X);
+	keyDestroy = KeyMapping("key.use", Keyboard::KEY_Z);
 #endif
 
 	//const int Unused = 99999;

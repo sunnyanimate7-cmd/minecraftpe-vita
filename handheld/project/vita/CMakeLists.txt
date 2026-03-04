@@ -440,7 +440,7 @@ target_link_libraries(minecraftcpp PUBLIC
   z
 )
 
-vita_create_self(minecraftcpp.self minecraftcpp)
+vita_create_self(minecraftcpp.self minecraftcpp UNSAFE)
 
 set(VPK_ARGS "")
 macro(add_assets GLOB)

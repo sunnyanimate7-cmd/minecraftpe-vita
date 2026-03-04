@@ -372,22 +372,26 @@ void handleController() {
 
 	// psvita: mouse
 	if(changedButtons & SCE_CTRL_RTRIGGER) {
-		Mouse::feed(MouseAction::ACTION_RIGHT, BTN_STATE(ctrl.buttons, SCE_CTRL_RTRIGGER), width / 2, height / 2);
+		Mouse::feed(MouseAction::ACTION_LEFT, BTN_STATE(ctrl.buttons, SCE_CTRL_RTRIGGER), width / 2, height / 2);
+		Keyboard::feed(Keyboard::KEY_X, BTN_STATE(ctrl.buttons, SCE_CTRL_RTRIGGER));
 	}
+
 	if(changedButtons & SCE_CTRL_LTRIGGER) {
 		Mouse::feed(MouseAction::ACTION_LEFT, BTN_STATE(ctrl.buttons, SCE_CTRL_LTRIGGER), width / 2, height / 2);
+		Keyboard::feed(Keyboard::KEY_Z, BTN_STATE(ctrl.buttons, SCE_CTRL_LTRIGGER));
 	}
 
 	// pstv: mouse
 	if(changedButtons & SCE_CTRL_R1) {
-		Mouse::feed(MouseAction::ACTION_RIGHT, BTN_STATE(ctrl.buttons, SCE_CTRL_R1), width / 2, height / 2);
+		Mouse::feed(MouseAction::ACTION_LEFT, BTN_STATE(ctrl.buttons, SCE_CTRL_R1), width / 2, height / 2);
+		Keyboard::feed(Keyboard::KEY_X, BTN_STATE(ctrl.buttons, SCE_CTRL_R1));
 	}
 	if(changedButtons & SCE_CTRL_L1) {
 		Mouse::feed(MouseAction::ACTION_LEFT, BTN_STATE(ctrl.buttons, SCE_CTRL_L1), width / 2, height / 2);
+		Keyboard::feed(Keyboard::KEY_Z, BTN_STATE(ctrl.buttons, SCE_CTRL_R1));
 	}
 
 }
-
 
 int main(int argc, char** argv) {
 	int ret;
@@ -410,12 +414,9 @@ int main(int argc, char** argv) {
 	sceAppUtilCacheMount();
 
 	MAIN_CLASS* app = new MAIN_CLASS();
-	//app->externalStoragePath = "savedata0:.minecraft/";
-	//app->externalCacheStoragePath = "cache0:.minecraft/";
-	// TODO: figure out why using savedata and cache is slow ?
+	app->externalStoragePath = "savedata0:";
+	app->externalCacheStoragePath = "savedata0:cache";
 
-	app->externalStoragePath = "ux0:data/.minecraft/";
-	app->externalCacheStoragePath = "ux0:data/.minecraft/";
 	int commandPort = 0;
 	if (argc > 1) {
 		commandPort = atoi(argv[1]);

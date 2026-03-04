@@ -723,30 +723,39 @@ void Minecraft::tickInput() {
 			// make controls nicer - Li
 
 			#if defined(__VITA__) || defined(_WIN32)
-				if (key == Keyboard::KEY_E) {
-					// open inventory
-					screenChooser.setScreen(SCREEN_BLOCKSELECTION);
-				}
-				if (key == Keyboard::KEY_ESCAPE) {
-					// pause the game
-					pauseGame(false);
-				}
-				if(key == Keyboard::KEY_Q) {
-					// drop currently selected inventory slot.
-					if (player->inventory->getItem(player->inventory->selected)) {
-						player->inventory->dropSlot(player->inventory->selected, false);
+				// check if we're in game
+				if(player != nullptr && level != nullptr) {
+					if (key == Keyboard::KEY_E) {
+						// open inventory
+						screenChooser.setScreen(SCREEN_BLOCKSELECTION);
 					}
-				}
+					if (key == Keyboard::KEY_ESCAPE) {
+						// pause the game
+						pauseGame(false);
+					}
+					if(key == Keyboard::KEY_Q) {
+						// drop currently selected inventory slot.
+						if (player->inventory->getItem(player->inventory->selected)) {
+							player->inventory->dropSlot(player->inventory->selected, false);
+						}
+					}
 
-				if(key == Keyboard::KEY_RIGHT) {
-					player->inventory->selectSlot((player->inventory->selected + 1) % Inventory::MAX_SELECTION_SIZE);
-				}
-				if(key == Keyboard::KEY_LEFT) {
-					player->inventory->selectSlot((player->inventory->selected - 1) % Inventory::MAX_SELECTION_SIZE);
-				}
+					if(key == Keyboard::KEY_RIGHT || key == Keyboard::KEY_LEFT) {
+						int totalSlots = gui.getNumSlots()-2;
+						int selectedSlot = (key == Keyboard::KEY_RIGHT) ? (player->inventory->selected + 1) : (player->inventory->selected - 1);
 
-				if (key == Keyboard::KEY_F5) {
-					options.thirdPersonView = !options.thirdPersonView;
+						if(selectedSlot >= totalSlots) {
+							selectedSlot = 0;
+						} else {
+							selectedSlot = totalSlots;
+						}
+
+						player->inventory->selectSlot(selectedSlot);
+					}
+
+					if (key == Keyboard::KEY_F5) {
+						options.thirdPersonView = !options.thirdPersonView;
+					}
 				}
 
 			#endif
