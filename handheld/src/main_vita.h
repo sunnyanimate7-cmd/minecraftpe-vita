@@ -43,10 +43,10 @@ static void png_funcReadFile(png_structp pngPtr, png_bytep data, png_size_t leng
 class AppPlatform_Vita : public AppPlatform
 {
 public:
-    bool supportsTouchscreen() override { return false; }
+    bool supportsTouchscreen() override { return true; }
 
-	int getScreenWidth() override { return 960; }
-	int getScreenHeight() override { return 544; }
+	int getScreenWidth() override { return width; }
+	int getScreenHeight() override { return height; }
 
     TextureData loadTexture(const std::string& filename_, bool textureFolder) override {
 		TextureData out;
@@ -254,8 +254,8 @@ void handleTouch() {
             int16_t x = touch_to_screen_x(curr->x);
             int16_t y = touch_to_screen_y(curr->y);
             sceClibPrintf("touchDown %d %d %d\n", curr->id, x, y);
-            if (slot == 0) Mouse::feed(1, 1, x, y);
-            Multitouch::feed(1, 1, x, y, slot);
+            if (slot == 0) Mouse::feed(MouseAction::ACTION_LEFT, MouseAction::DATA_DOWN, x, y);
+            Multitouch::feed(1, MouseAction::DATA_DOWN, x, y, slot);
         }
     }
 
@@ -269,8 +269,8 @@ void handleTouch() {
                 int16_t x = touch_to_screen_x(curr->x);
                 int16_t y = touch_to_screen_y(curr->y);
                 sceClibPrintf("touchMove %d %d %d\n", curr->id, x, y);
-                if (slot == 0) Mouse::feed(0, 0, x, y);
-                Multitouch::feed(1, 0, x, y, slot);
+                if (slot == 0) Mouse::feed(MouseAction::ACTION_MOVE, MouseAction::DATA_DOWN, x, y);
+                Multitouch::feed(1, MouseAction::DATA_DOWN, x, y, slot);
                 break;
             }
         }
@@ -288,8 +288,8 @@ void handleTouch() {
             int16_t x = touch_to_screen_x(prev->x);
             int16_t y = touch_to_screen_y(prev->y);
             sceClibPrintf("touchUp %d %d %d\n", prev->id, x, y);
-            if (slot == 0) Mouse::feed(1, 0, x, y);
-            Multitouch::feed(1, 0, x, y, slot);
+            if (slot == 0) Mouse::feed(MouseAction::ACTION_LEFT, MouseAction::DATA_UP, x, y);
+            Multitouch::feed(1, MouseAction::DATA_UP, x, y, slot);
             freeSlot(prev->id);
         }
     }
@@ -410,8 +410,9 @@ int main(int argc, char** argv) {
 	sceAppUtilCacheMount();
 
 	MAIN_CLASS* app = new MAIN_CLASS();
-	app->externalStoragePath = "savedata0:";
-	app->externalCacheStoragePath = "savedata0:cache";
+	// savedata0 is too slow .. (probably bcs pfs)
+	app->externalStoragePath = "ux0:/data/minecraftpe";
+	app->externalCacheStoragePath = "ux0:/data/minecraftpe";
 
 	int commandPort = 0;
 	if (argc > 1) {

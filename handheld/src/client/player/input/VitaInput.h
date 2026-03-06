@@ -12,12 +12,17 @@
 static const int moveStick = 1;
 static const int lookStick = 2;
 
+
 class VitaTurnBuild : public UnifiedTurnBuild {
 public:
 	VitaTurnBuild(int turnMode, int width, int height, float maxMovementDelta, float sensitivity, IInputHolder* holder, Minecraft* minecraft) :
 		UnifiedTurnBuild(turnMode, width, height, maxMovementDelta, sensitivity, holder, minecraft) {}
 
 	TurnDelta getTurnDelta() override {
+		if(Multitouch::getFirstActivePointerIdEx() >= 0) {
+			return UnifiedTurnBuild::getTurnDelta();
+		}
+
 		TurnDelta td = UnifiedTurnBuild::getTurnDelta();
 
 		float stickX = Controller::getTransformedX(lookStick, 0.1f, 1.25f, true);
@@ -35,9 +40,21 @@ public:
 	}
 
 	bool tickBuild(Player* p, BuildActionIntention* bai) override {
+		if(Multitouch::getFirstActivePointerIdEx() >= 0) {
+			return UnifiedTurnBuild::tickBuild(p, bai);
+		}
+
 		if (Mouse::getButtonState(MouseAction::ACTION_LEFT) != 0) {
-				*bai = BuildActionIntention(BuildActionIntention::BAI_REMOVE | BuildActionIntention::BAI_ATTACK);
+			if(totalMineTicks++ <= 0) {
+				*bai = BuildActionIntention(BuildActionIntention::BAI_FIRSTREMOVE | BuildActionIntention::BAI_ATTACK);
 				return true;
+			}
+			else {
+				*bai = BuildActionIntention(BuildActionIntention::BAI_REMOVE |  BuildActionIntention::BAI_ATTACK);
+				return true;
+			}
+		} else {
+			totalMineTicks = 0;
 		}
 
 		if (Mouse::getButtonState(MouseAction::ACTION_RIGHT) != 0) {
@@ -57,6 +74,9 @@ public:
 		UnifiedTurnBuild::onConfigChanged(c);
 	}
 private:
+
+	int totalMineTicks = 0;
+
 	int buildHoldTicks = 0;
 	int buildDelayTicks = 5;
 };
@@ -97,9 +117,34 @@ public:
 	}
 
 	bool allowPicking() override {
-	 	mousex = _mc->width/2; // Mouse::getX();
-		mousey = _mc->height/2; // Mouse::getY();
-		return true; // Mouse::getButtonState(MouseAction::ACTION_LEFT) == MouseAction::DATA_DOWN || Mouse::getButtonState(MouseAction::ACTION_RIGHT) == MouseAction::DATA_DOWN;
+
+		int pointer = Multitouch::getFirstActivePointerIdEx();
+
+		if(pointer >= 0) { // point to location using touchscreen
+				const float x = Multitouch::getX(pointer);
+				const float y = Multitouch::getY(pointer);
+
+				if (_turnBuild.isInsideArea(x, y)) {
+					mousex = x;
+					mousey = y;
+					return true;
+				}
+				else {
+					return false;
+				}
+		}
+		else {
+
+			// controller / vita inputs
+			// default to the center of the screen
+
+			mousex = _mc->width/2;
+			mousey = _mc->height/2;
+
+			return true;
+
+		}
+
 	}
 
 	void render(float alpha) override {
