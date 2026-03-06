@@ -125,6 +125,30 @@ void OptionsScreen::selectCategory( int index ) {
 		currentOptionPane = optionPanes[index];
 }
 
+/*
+ static const Option MUSIC;
+ static const Option SOUND;                *
+ static const Option INVERT_MOUSE;
+ static const Option SENSITIVITY;
+ static const Option RENDER_DISTANCE;
+ static const Option VIEW_BOBBING;
+ static const Option ANAGLYPH;
+ static const Option LIMIT_FRAMERATE;
+ static const Option DIFFICULTY;
+ static const Option GRAPHICS;
+ static const Option AMBIENT_OCCLUSION;
+ static const Option GUI_SCALE;
+
+ static const Option THIRD_PERSON;
+ static const Option HIDE_GUI;
+ static const Option SERVER_VISIBLE;
+ static const Option LEFT_HANDED;
+ static const Option USE_TOUCHSCREEN;
+ static const Option USE_TOUCH_JOYPAD;
+ static const Option DESTROY_VIBRATION;
+
+ static const Option PIXELS_PER_MILLIMETER;
+ */
 void OptionsScreen::generateOptionScreens() {
 	optionPanes.push_back(new OptionsPane());
 	optionPanes.push_back(new OptionsPane());
@@ -134,7 +158,30 @@ void OptionsScreen::generateOptionScreens() {
 	optionPanes[0]->createOptionsGroup("options.group.mojang")
 		//.addOptionItem(&Options::Option::THIRD_PERSON, minecraft);
 		.addOptionItem(&Options::Option::SENSITIVITY, minecraft);
-// 	int mojangGroup = optionPanes[0]->createOptionsGroup("Mojang");
+
+	optionPanes[1]->createOptionsGroup("options.group.game")
+		.addOptionItem(&Options::Option::DIFFICULTY, minecraft)
+		.addOptionItem(&Options::Option::THIRD_PERSON, minecraft)
+		.addOptionItem(&Options::Option::SERVER_VISIBLE, minecraft);
+
+	optionPanes[2]->createOptionsGroup("options.group.controls")
+		.addOptionItem(&Options::Option::INVERT_MOUSE, minecraft)
+		.addOptionItem(&Options::Option::LEFT_HANDED, minecraft)
+		.addOptionItem(&Options::Option::SENSITIVITY, minecraft)
+		.addOptionItem(&Options::Option::USE_TOUCHSCREEN, minecraft)
+		.addOptionItem(&Options::Option::USE_TOUCH_JOYPAD, minecraft);
+#ifndef __VITA__
+		optionPanes[2]->createOptionsGroup("options.group.feedback")
+		.addOptionItem(&Options::Option::DESTROY_VIBRATION, minecraft)
+#endif
+		optionPanes[3]->createOptionsGroup("options.group.graphics")
+		.addOptionItem(&Options::Option::HIDE_GUI, minecraft)
+		.addOptionItem(&Options::Option::PIXELS_PER_MILLIMETER, minecraft)
+		.addOptionItem(&Options::Option::RENDER_DISTANCE, minecraft)
+		.addOptionItem(&Options::Option::LIMIT_FRAMERATE, minecraft)
+		.addOptionItem(&Options::Option::AMBIENT_OCCLUSION, minecraft);
+
+		// 	int mojangGroup = optionPanes[0]->createOptionsGroup("Mojang");
 // 	static const int arr[] = {5,4,3,15};
 // 	std::vector<int> vec (arr, arr + sizeof(arr) / sizeof(arr[0]) );
 // 	optionPanes[0]->createStepSlider(minecraft, mojangGroup, "This works?", &Options::Option::DIFFICULTY, vec);
