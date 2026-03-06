@@ -36,14 +36,8 @@ public:
 
 	bool tickBuild(Player* p, BuildActionIntention* bai) override {
 		if (Mouse::getButtonState(MouseAction::ACTION_LEFT) != 0) {
-			if (mineHoldTicks >= mineDelayTicks) mineHoldTicks = 0;
-				if (++mineHoldTicks == 1) {
-					*bai = BuildActionIntention(BuildActionIntention::BAI_REMOVE | BuildActionIntention::BAI_ATTACK);
-					return true;
-				}
-		}
-		else {
-			mineHoldTicks = 0;
+				*bai = BuildActionIntention(BuildActionIntention::BAI_REMOVE | BuildActionIntention::BAI_ATTACK);
+				return true;
 		}
 
 		if (Mouse::getButtonState(MouseAction::ACTION_RIGHT) != 0) {
@@ -63,8 +57,6 @@ public:
 		UnifiedTurnBuild::onConfigChanged(c);
 	}
 private:
-	int mineHoldTicks = 0;
-	int mineDelayTicks = 5;
 	int buildHoldTicks = 0;
 	int buildDelayTicks = 5;
 };
@@ -82,12 +74,6 @@ public:
 		ya += -Controller::getTransformedY(moveStick, 0.1f, 1.25f, true);
 	}
 };
-
-/*
-move = dpad + l stick
-turn = r stick
-build = touch
-*/
 
 class VitaInputHolder : public IInputHolder {
 	static const int MovementLimit = 200; // per update
@@ -111,8 +97,8 @@ public:
 	}
 
 	bool allowPicking() override {
-		mousex = 960/2; // Mouse::getX();
-		mousey = 544/2; // Mouse::getY();
+	 	mousex = _mc->width/2; // Mouse::getX();
+		mousey = _mc->height/2; // Mouse::getY();
 		return true; // Mouse::getButtonState(MouseAction::ACTION_LEFT) == MouseAction::DATA_DOWN || Mouse::getButtonState(MouseAction::ACTION_RIGHT) == MouseAction::DATA_DOWN;
 	}
 

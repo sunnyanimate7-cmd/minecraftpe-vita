@@ -723,7 +723,8 @@ void Minecraft::tickInput() {
 			// make controls nicer - Li
 
 			#if defined(__VITA__) || defined(_WIN32)
-				if(player != nullptr && level != nullptr) { // check if we're in game
+				if(true) { //TODO: only do this if the world is loaded ..
+
 					if (key == Keyboard::KEY_E) {
 						// open inventory
 						screenChooser.setScreen(SCREEN_BLOCKSELECTION);
@@ -876,12 +877,14 @@ void Minecraft::tickInput() {
 				}
 			#endif
 
+			#ifndef __VITA__ // this is handled earlier ..
 			#ifndef RPI
-				if (key == 82) // R ???
+				if (key == Keyboard::KEY_R) // R ???
 					pauseGame(false);
 			#else
 				if (key == Keyboard::KEY_ESCAPE)
 					pauseGame(false);
+			#endif
 			#endif
 
 			#ifndef OPENGL_ES
@@ -926,13 +929,10 @@ void Minecraft::tickInput() {
 	//        sure just yet what way to go.
 	bool buildHandled = inputHolder->getBuildInput()->tickBuild(player, &bai);
 	if (buildHandled) {
-#ifndef __VITA__
 		if (!bai.isRemoveContinue())
-#endif
 			handleBuildAction(&bai);
 	}
 
-#ifndef __VITA__
 	bool isTryingToDestroyBlock = (options.useMouseForDigging
 			?	(Mouse::isButtonDown(MouseAction::ACTION_LEFT) && mouseDiggable)
 			:	Keyboard::isKeyDown(options.keyDestroy.key))
@@ -943,9 +943,11 @@ void Minecraft::tickInput() {
 	handleMouseDown(MouseAction::ACTION_LEFT, isTryingToDestroyBlock);
 	handleMouseClick(buildHandled && bai.isInteract()
 		|| options.useMouseForDigging && Mouse::isButtonDown(MouseAction::ACTION_RIGHT));
+#elif __VITA__
+	// can someone explain why ??!!! is interact is dig??
+	handleMouseDown(MouseAction::ACTION_LEFT, isTryingToDestroyBlock && buildHandled);
 #else
 	handleMouseDown(MouseAction::ACTION_LEFT, isTryingToDestroyBlock || (buildHandled && bai.isInteract()));
-#endif
 #endif
 
 	lastTickTime = getTimeMs();
@@ -964,6 +966,7 @@ void Minecraft::tickInput() {
 
 void Minecraft::handleMouseDown(int button, bool down) {
 #ifndef STANDALONE_SERVER
+//#if !defined(_WIN32) && !defined(RPI) && !defined(PSVITA)
 #ifndef RPI
 	if(player->isUsingItem()) {
 		if(!down && !Keyboard::isKeyDown(options.keyUse.key)) {
