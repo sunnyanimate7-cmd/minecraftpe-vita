@@ -15,9 +15,9 @@ project(minecraftcpp)
 
 include("${VITASDK}/share/vita.cmake" REQUIRED)
 
-set(VITA_APP_NAME "Minecraft: Pocket Edition")
+set(VITA_APP_NAME "Minecraft PE")
 set(VITA_TITLEID  "MCPE00000")
-set(VITA_VERSION  "01.00")
+set(VITA_VERSION  "00.61")
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
@@ -26,7 +26,17 @@ set(VITA_MKSFOEX_FLAGS "${VITA_MKSFOEX_FLAGS} -d PARENTAL_LEVEL=1")
 set(HANDHELD "${CMAKE_CURRENT_LIST_DIR}/../../src/")
 set(ASSETS_DIR "${CMAKE_CURRENT_LIST_DIR}/../../data")
 
+set(VITA_ICON0 ${CMAKE_CURRENT_LIST_DIR}/sce_sys/icon0.png)
+
+if(DEMO)
+set(VITA_APP_NAME "Minecraft PE Demo")
+set(VITA_TITLEID  "MCPEDEMO0")
+set(VITA_ICON0 ${CMAKE_CURRENT_LIST_DIR}/sce_sys/icon0_demo.png)
+add_definitions(-D__VITA__ -DDEMO_MODE)
+else()
 add_definitions(-D__VITA__)
+endif()
+
 add_compile_options(-O3)
 
 add_library(raknet
@@ -489,7 +499,7 @@ vita_create_vpk(minecraftcpp.vpk ${VITA_TITLEID} minecraftcpp.self
   FILE ${CMAKE_CURRENT_LIST_DIR}/module/libpvrPSP2_WSEGL.suprx                 module/libpvrPSP2_WSEGL.suprx
   FILE ${CMAKE_CURRENT_LIST_DIR}/module/libc.suprx                             sce_module/libc.suprx
   FILE ${CMAKE_CURRENT_LIST_DIR}/module/libfios2.suprx                         sce_module/libfios2.suprx
-  FILE ${CMAKE_CURRENT_LIST_DIR}/sce_sys/icon0.png                             sce_sys/icon0.png
+  FILE ${VITA_ICON0}                                                           sce_sys/icon0.png
   FILE ${CMAKE_CURRENT_LIST_DIR}/sce_sys/pic0.png                              sce_sys/pic0.png
   FILE ${CMAKE_CURRENT_LIST_DIR}/sce_sys/livearea/contents/bg.png              sce_sys/livearea/contents/bg.png
   FILE ${CMAKE_CURRENT_LIST_DIR}/sce_sys/livearea/contents/gate.png            sce_sys/livearea/contents/gate.png
