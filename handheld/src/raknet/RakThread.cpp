@@ -88,7 +88,7 @@ int RakThread::Create( void* start_address( void* ), void *arglist, int priority
 	SceUID thid = sceKernelCreateThread(
 		"RakThread",
 		vita_thread_entry,
-		0x40,
+		0x10000100,
 		MAX_ALLOCA_STACK_ALLOCATION*2,
 		0,
 		SCE_KERNEL_CPU_MASK_USER_ALL,
