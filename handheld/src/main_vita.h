@@ -365,6 +365,7 @@ int main(int argc, char** argv) {
 	while (running) {
 		handleTouch();
 		handleController();
+		sceImeUpdate();
 		app->update();
 	}
 

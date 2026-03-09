@@ -136,6 +136,7 @@ public:
 		keyboardVisible = false;
 	}
 	virtual bool isKeyboardVisible() {return keyboardVisible;}
+	virtual std::string getKeyboardInput() { return ""; };
 
 	virtual std::string defaultUsername() { return "Steve"; }
 protected:

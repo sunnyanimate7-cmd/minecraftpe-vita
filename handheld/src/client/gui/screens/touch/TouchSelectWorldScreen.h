@@ -107,6 +107,7 @@ private:
 	THeader bHeader;
 	TButton bBack;
 	Button bWorldView;
+	THeader bLevelName;
 	TouchWorldSelectionList* worldsList;
 	LevelSummaryList levels;
 
@@ -115,6 +116,7 @@ private:
 	int _state;
 	static const int _STATE_DEFAULT = 0;
 	static const int _STATE_CREATEWORLD = 1;
+	static const int _STATE_INPUTNAME = 2;
 	//LevelStorageSource* levels;
 };
 };

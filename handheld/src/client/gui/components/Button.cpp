@@ -187,6 +187,7 @@ THeader::THeader( int id, int x, int y, int w, int h, const std::string& msg )
 }
 
 void THeader::render( Minecraft* minecraft, int xm, int ym ) {
+	if(!visible) return;
 	Font* font = minecraft->font;
 	renderBg(minecraft, xm, ym);
 	

@@ -26,6 +26,7 @@ static void png_funcReadFile(png_structp pngPtr, png_bytep data, png_size_t leng
 static SceWChar16 ime_out[SCE_IME_MAX_PREEDIT_LENGTH + SCE_IME_MAX_TEXT_LENGTH + 1] = {0};
 static SceUInt8 ime_out_utf8[sizeof(ime_out)] = {0};
 static char ime_inital[8] = { 0 };
+static bool ime_is_open = false;
 
 static void Utf16ToUtf8(const uint16_t *src, uint8_t *dst)
 {
@@ -62,9 +63,11 @@ static void ImeEventHandler(void *arg, const SceImeEventData *e)
 		break;
 		case SCE_IME_EVENT_PRESS_ENTER:
 			sceImeClose();
+			ime_is_open = false;
 			break;
 		case SCE_IME_EVENT_PRESS_CLOSE:
 			sceImeClose();
+			ime_is_open = false;
 			break;
 	}
 }
@@ -99,8 +102,24 @@ public:
 		StringVector vec;
 		int ret;
 
-		SceUInt32 ime_workram[SCE_IME_WORK_BUFFER_SIZE / sizeof(SceInt32)] = {0};
+		showKeyboard();
 
+		while(!sceImeUpdate()) {}
+
+		Utf16ToUtf8(ime_out, ime_out_utf8);
+
+		std::string imetxt = std::string((char*)ime_out_utf8);
+		LOGI("imetxt: %s\n", imetxt.c_str());
+
+		vec.push_back(imetxt);
+
+		return vec;
+	}
+
+	void showKeyboard() override {
+		int ret;
+		static SceUInt32 ime_workram[SCE_IME_WORK_BUFFER_SIZE / sizeof(SceInt32)] = {0};
+	
 		SceImeParam param;
 		LOGI("sceParamInit\n");
 		sceImeParamInit(&param);
@@ -121,19 +140,24 @@ public:
 
 		LOGI("sceImeOpen\n");
 		checkSce(sceImeOpen(&param));
-
-		while(!sceImeUpdate()) {}
-
-		Utf16ToUtf8(ime_out, ime_out_utf8);
-
-		std::string imetxt = std::string((char*)ime_out_utf8);
-		LOGI("imetxt: %s\n", imetxt.c_str());
-
-		vec.push_back(imetxt);
-
-		return vec;
-
+		ime_is_open = true;
 	}
+
+	void hideKeyboard() override {
+		sceImeClose();
+		ime_is_open = false;
+	}
+
+	bool isKeyboardVisible() override {
+		return ime_is_open;
+	}
+
+	std::string getKeyboardInput() override {
+		Utf16ToUtf8(ime_out, ime_out_utf8);
+		std::string imetxt = std::string((char*)ime_out_utf8);
+		return imetxt;
+	}
+
 
 	bool isPowerVR() override { return true; }
 
