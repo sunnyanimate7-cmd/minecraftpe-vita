@@ -371,7 +371,6 @@ add_executable(minecraftcpp
   ${HANDHELD}/client/gui/GuiComponent.cpp
   ${HANDHELD}/client/gui/Gui.cpp
   ${HANDHELD}/client/gui/Font.cpp
-  ${HANDHELD}/client/gui/Keyboard.cpp  
   ${HANDHELD}/client/gui/components/OptionsPane.cpp
   ${HANDHELD}/client/gui/components/ScrolledSelectionList.cpp
   ${HANDHELD}/client/gui/components/InventoryPane.cpp
@@ -430,16 +429,6 @@ target_include_directories(minecraftcpp PRIVATE
 target_link_directories(minecraftcpp PRIVATE
   ${CMAKE_CURRENT_LIST_DIR}/lib
 )
-
-add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/SceNgs/libSceNgs_stub.a
-  COMMAND vita-libs-gen ${CMAKE_CURRENT_LIST_DIR}/lib/SceNgs.yml ${CMAKE_CURRENT_BINARY_DIR}/SceNgs
-  COMMAND make -C ${CMAKE_CURRENT_BINARY_DIR}/SceNgs
-)
-add_custom_target(SceNgs_target DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/SceNgs/libSceNgs_stub.a)
-
-add_library(SceNgs INTERFACE)
-target_link_libraries(SceNgs INTERFACE ${CMAKE_CURRENT_BINARY_DIR}/SceNgs/libSceNgs_stub.a)
-add_dependencies(SceNgs SceNgs_target)
 
 target_link_libraries(minecraftcpp PUBLIC
   IMGEGL_stub_weak

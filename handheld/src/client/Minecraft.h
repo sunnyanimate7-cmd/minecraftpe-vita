@@ -11,7 +11,6 @@
 #include "player/input/ITurnInput.h"
 #ifndef STANDALONE_SERVER
 #include "gui/Gui.h"
-#include "gui/Keyboard.h"
 #include "gui/screens/ScreenChooser.h"
 #endif
 //#include "../network/RakNetInstance.h"
@@ -180,7 +179,6 @@ public:
 	Mob*			cameraTargetPlayer;
 #ifndef STANDALONE_SERVER
 	Gui gui;
-	GuiKeyboard keyboard;
 #endif
 	CThread* generateLevelThread;
 	Screen* screen;
