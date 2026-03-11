@@ -12,10 +12,11 @@
 #include "../../../../platform/input/Mouse.h"
 #include "../../../../Performance.h"
 
+#include "../SimpleChooseLevelScreen.h"
+#include "../AdvancedChooseLevelScreen.h"
+
 #include <algorithm>
 #include <set>
-#include "../SimpleChooseLevelScreen.h"
-#include "TouchCreateWorldScreen.h"
 
 namespace Touch {
 
@@ -404,11 +405,11 @@ void SelectWorldScreen::tick()
 			minecraft->hostMultiplayer();
 			minecraft->setScreen(new ProgressScreen());
 			_hasStartedLevel = true;
-		#elif defined(_WIN32)
+		#elif defined(_WIN32) && 0 // honestly our custom choose level scren is probably better than whatever win32 does
 			std::string name = getUniqueLevelName("perf");
 			minecraft->setScreen(new SimpleChooseLevelScreen(name));
-		#elif defined(__VITA__)
-			minecraft->setScreen(new CreateWorldScreen());
+		#elif !defined(__ANDROID__) || !defined(__APPLE__)
+			minecraft->setScreen(new AdvancedChooseLevelScreen());
 			return;
 		#else
 			int status = minecraft->platform()->getUserInputStatus();

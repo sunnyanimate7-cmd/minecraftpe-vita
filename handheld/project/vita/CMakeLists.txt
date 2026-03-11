@@ -407,11 +407,11 @@ add_executable(${PROJECT_NAME}
   ${HANDHELD}/client/gui/screens/touch/TouchJoinGameScreen.cpp
   ${HANDHELD}/client/gui/screens/touch/TouchSelectWorldScreen.cpp
   ${HANDHELD}/client/gui/screens/touch/TouchStartMenuScreen.cpp
-  ${HANDHELD}/client/gui/screens/touch/TouchCreateWorldScreen.cpp
   ${HANDHELD}/client/gui/screens/touch/TouchIngameBlockSelectionScreen.cpp
   ${HANDHELD}/client/gui/screens/UploadPhotoScreen.cpp
   ${HANDHELD}/client/gui/screens/ArmorScreen.cpp
   ${HANDHELD}/client/gui/screens/SimpleChooseLevelScreen.cpp
+  ${HANDHELD}/client/gui/screens/AdvancedChooseLevelScreen.cpp
   ${HANDHELD}/client/gui/screens/ChestScreen.cpp
   ${HANDHELD}/client/gui/screens/ConfirmScreen.cpp
   ${HANDHELD}/client/gui/screens/TextEditScreen.cpp
