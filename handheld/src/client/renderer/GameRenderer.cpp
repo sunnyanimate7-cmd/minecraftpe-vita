@@ -653,8 +653,11 @@ void GameRenderer::pick(float a) {
 
     float range = mc->gameMode->getPickRange();
     bool isPicking = true;
-
+#ifdef __VITA__
+    bool freeform = true;
+#else
     bool freeform = mc->useTouchscreen()  && !mc->options.isJoyTouchArea;
+#endif
     if (freeform) {
         isPicking = updateFreeformPickDirection(a, pickDirection);
     } else {
